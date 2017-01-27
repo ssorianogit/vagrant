@@ -1,0 +1,8 @@
+# IDE junk
+.idea/*
+*.iml
+.project
+# Vagrant stuff
+.vagrant
+# Python
+*.pyc

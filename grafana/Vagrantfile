@@ -15,12 +15,18 @@ Vagrant.configure(2) do |config|
     echo 'deb https://packagecloud.io/grafana/stable/debian/ jessie main' | sudo tee /etc/apt/sources.list.d/grafana.list
     echo 'deb https://packagecloud.io/grafana/testing/debian/ jessie main' | sudo tee --append /etc/apt/sources.list.d/grafana.list
     sudo apt update
-    sudo apt upgrade --force-yes
+    sudo apt upgrade -y --force-yes
+    sudo locale-gen es_ES.UTF-8
+    dpkg-reconfigure locales
     echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-    echo "Install Grafana"
+    echo "Install Grafana and graphite"
     echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
     sudo apt install grafana -y --force-yes
     sudo update-rc.d grafana-server defaults 95 10
     sudo service grafana-server start
+    sudo apt install graphite-web graphite-carbon -y --force-yes
+    sudo apt install postgresql libpq-dev python-psycopg2 -y --force-yes
+    sudo -u postgres psql -c "CREATE USER graphite WITH PASSWORD 'graphite';"
+    sudo -u postgres psql -c "CREATE DATABASE graphite WITH OWNER graphite;"
     SHELL
   end
