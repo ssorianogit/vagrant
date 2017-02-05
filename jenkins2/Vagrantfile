@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+jenkinshomedisk = "/home/ssoriano/VirtualBox VMs/jenkins2/jenkinshomedisk.vdi"
+Vagrant.configure(2) do |config|
+  config.vm.define "jenkins2"
+  config.vm.box = "ubuntu/trusty64"
+  config.ssh.forward_agent = true
+  config.vm.network "public_network", ip: "192.168.2.201"
+  config.vm.hostname = "jenkins2"
+  config.vm.provider :virtualbox do |vb|
+    vb.memory = "3072"
+    vb.cpus = "1"
+    vb.name = "jenkins2"
+    unless File.exist?(jenkinshomedisk)
+     vb.customize ["createhd",  "--filename", jenkinshomedisk, "--size", "4096"]
+     vb.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", "1", "--type", "hdd", "--medium", jenkinshomedisk]
+    end 
+  config.vm.provision "file", source: "~/.ssh/id_rsa_virtualbox", destination: "~/.ssh/id_rsa"
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yml"
+  end
+  end
+end

@@ -1,0 +1,18 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName sonarqube.jenkins.com
+  ServerAlias sonarqube
+  ProxyRequests Off
+  <Proxy *>
+    Order deny,allow
+    Allow from all
+  </Proxy>
+  ProxyPreserveHost on
+  ProxyPass / http://localhost:9000/ nocanon
+  AllowEncodedSlashes NoDecode
+
+  ErrorLog ${APACHE_LOG_DIR}/sonarqube-error.log
+  LogLevel warn
+  CustomLog ${APACHE_LOG_DIR}/sonarqube-access.log combined
+
+</VirtualHost>
