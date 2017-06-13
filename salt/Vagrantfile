@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.define "salt"
+  config.vm.box = "ubuntu/xenial64"
+  config.ssh.forward_agent = true
+  config.vm.network "public_network"
+  config.vm.hostname = "salt"
+  config.vm.provider :virtualbox do |vb|
+    vb.memory = "1024"
+    vb.cpus = "1"
+    vb.name = "salt"
+  end
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "salt.yml"
+    ansible.host_vars = {
+      "salt" => {"ansible_python_interpreter" => "/usr/bin/python3"}
+    }
+  end
+end

@@ -6,3 +6,5 @@
 .vagrant
 # Python
 *.pyc
+*.log
+*.retry
