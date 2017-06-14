@@ -41,3 +41,33 @@
       - salt-ssh
       - salt-syndic
 
+  - name: "Create base /srv/salt directory"
+    file:
+      path: /srv/salt
+      state: directory
+      mode: 0755
+
+  - name: "create top.sls"
+    file:
+      path: /srv/salt/top.sls
+      state: touch
+  
+  - name: "Add top.sls content"
+    template:
+      src: ./templates/top.sls.j2
+      dest: /srv/salt/top.sls
+
+  - name: "Add graphite.sls content"
+    template:
+      src: ./templates/graphite.sls.j2
+      dest: /srv/salt/graphite.sls
+  
+  - name: "Add tunning.sls content"
+    template:
+      src: ./templates/tunning.sls.j2
+      dest: /srv/salt/tunning.sls
+
+  - name: "Install packages with salt"
+    command: /usr/bin/salt-call --local state.apply
+    args:
+      chdir: /srv/salt/
