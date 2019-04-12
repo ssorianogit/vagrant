@@ -1,0 +1,24 @@
+---
+- name: zookeeper1
+  box: ubuntu/bionic64
+  box_ip: 192.168.0.102
+  memory: 1024
+  cpu: 1
+
+- name: kafka1
+  box: ubuntu/bionic64
+  box_ip: 192.168.0.103
+  memory: 1024
+  cpu: 1
+
+- name: kafka2
+  box: ubuntu/bionic64
+  box_ip: 192.168.0.104
+  memory: 1024
+  cpu: 1
+
+- name: kafka3
+  box: ubuntu/bionic64
+  box_ip: 192.168.0.105
+  memory: 1024
+  cpu: 1
